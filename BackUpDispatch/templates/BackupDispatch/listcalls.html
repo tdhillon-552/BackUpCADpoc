@@ -1,0 +1,18 @@
+<html>
+<h1>
+    Active Calls
+</h1>
+<body>
+
+{% for call in object_list %}
+    {% if call.is_active %}
+
+        {{ call.id }}
+        {{ call.CFSType.description }}
+<br>
+
+    {% endif %}
+
+{% endfor %}
+</body>
+</html>
