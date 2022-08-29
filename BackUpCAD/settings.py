@@ -26,6 +26,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'BackUpDispatch',
+    'channels',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +59,17 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'BackUpCAD.wsgi.application'
-CELERY_BROKER_URL = 'memory'
+ASGI_APPLICATION = 'BackUpCAD.asgi.application'
+CELERY_BROKER_URL = 'redis://s-ci-iv-web1:6379'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('s-ci-iv-web1', 6379)]
+        }
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

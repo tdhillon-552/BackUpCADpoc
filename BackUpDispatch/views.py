@@ -4,6 +4,7 @@ from rest_framework.generics import ListAPIView
 
 from BackUpDispatch.forms import CFSCreateForm
 from BackUpDispatch.models import CFS
+from BackUpDispatch.serializers import CallSerializer
 
 
 def home(request):
@@ -21,4 +22,5 @@ def active_calls(request):
 
 
 class API_list_calls(ListAPIView):
-    model = CFS
+    serializer_class = CallSerializer
+    queryset = CFS.objects.all()

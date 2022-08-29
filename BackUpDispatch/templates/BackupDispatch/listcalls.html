@@ -1,18 +1,48 @@
 <html>
+<head>
+    <style>
+        table, th, td {
+            border: 2px solid black;
+            padding: 5px 5px 5px 5px;
+        }
+    </style>
+</head>
 <h1>
     Active Calls
 </h1>
 <body>
+<table>
+    <tr>
+        <th>Is_Active</th>
+        <th>Created Time</th>
+        <th>Location</th>
+        <th>Beat</th>
+    </tr>
+    <tbody id="calls">
 
-{% for call in object_list %}
-    {% if call.is_active %}
 
-        {{ call.id }}
-        {{ call.CFSType.description }}
-<br>
+    </tbody>
 
-    {% endif %}
 
-{% endfor %}
+
+</table>
+<h3 id="calls">
+
+
+</h3>
+
+<script>
+    let tbody = document.getElementById('calls')
+
+
+
+    let socket = new WebSocket('ws://localhost:8000/ws/activecalls')
+
+    socket.onmessage = function ({data: activecalls}) {
+        tbody.innerText = '<tr><td>' + JSON.parse(activecalls)[0].is_active + '</td></tr>'
+
+
+    }
+</script>
 </body>
 </html>
