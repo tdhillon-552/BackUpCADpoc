@@ -1,48 +1,335 @@
+<!doctype html>
 <html>
 <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>BackUpCAD Active Incidents</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css' rel='stylesheet'>
     <style>
-        table, th, td {
-            border: 2px solid black;
-            padding: 5px 5px 5px 5px;
+        body {
+            background-color: #f9f9fa;
+            font-family: 'Roboto', sans-serif;
         }
+
+        .padding {
+            padding: .5rem .5rem 0rem .5rem
+
+        }
+
+        .card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid #d2d2dc;
+            border-radius: 0;
+        }
+
+        .card .card-body {
+            /*padding: 1.25rem 1.75rem*/
+            padding: .6rem .5rem .2rem .5rem;
+        }
+
+        .card-body {
+            flex: 1 1 auto;
+            padding: 1.25rem
+        }
+
+        .card .card-title {
+            color: #000000;
+            font-weight: 500;
+            margin: .2rem;
+        }
+
+        .card .card-description {
+            font-weight: 400;
+            color: #76838f;
+            margin: .25rem;
+        }
+
+        .narrative {
+            background-color: #ddd;
+            border-top: 0px none;
+            border-bottom: 1px solid #d2d2dc;
+            border-left: 1px solid #d2d2dc;
+            border-right: 1px solid #d2d2dc;
+        }
+
+        .badge {
+            border-radius: 0;
+            font-weight: bold;
+            line-height: 1;
+            padding: .3rem .7rem .4rem .7rem;
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+
+        .badge-outline-primary {
+            color: #405189;
+            border: 1px solid #405189;
+            font-size: 1rem;
+        }
+
+        .badge.badge-pill {
+            font-size: 1rem;
+            border-radius: 10rem
+        }
+
+        .badge-outline-info {
+            font-size: 1rem;
+            color: black;
+            border: 1px solid black
+        }
+
+        .badge-outline-danger {
+            font-size: 1rem;
+            color: #f1536e;
+            border: 1px solid #f1536e
+        }
+
+        .badge-outline-success {
+            font-size: 1rem;
+            color: #00c689;
+            border: 1px solid #00c689
+        }
+
+        .badge-outline-warning {
+            font-size: 1rem;
+            color: #fda006;
+            border: 1px solid #fda006
+        }
+
+        .statusLabel {
+            background-color: steelblue;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .blurbox {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.3);
+            top: 40px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            -webkit-backdrop-filter: blur(3px);
+            backdrop-filter: blur(3px);
+            z-index: 1;
+            text-align: center;
+        }
+
+        .spinner {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            height: 60px;
+            width: 60px;
+            margin: 0px auto;
+            -webkit-animation: rotation .6s infinite linear;
+            -moz-animation: rotation .6s infinite linear;
+            -o-animation: rotation .6s infinite linear;
+            animation: rotation .6s infinite linear;
+            border-left: 6px solid rgba(0, 174, 239, .15);
+            border-right: 6px solid rgba(0, 174, 239, .15);
+            border-bottom: 6px solid rgba(0, 174, 239, .15);
+            border-top: 6px solid rgba(0, 174, 239, .8);
+            border-radius: 100%;
+        }
+
+        @-webkit-keyframes rotation {
+            from {
+                -webkit-transform: rotate(0deg);
+            }
+            to {
+                -webkit-transform: rotate(359deg);
+            }
+        }
+
+        @-moz-keyframes rotation {
+            from {
+                -moz-transform: rotate(0deg);
+            }
+            to {
+                -moz-transform: rotate(359deg);
+            }
+        }
+
+        @-o-keyframes rotation {
+            from {
+                -o-transform: rotate(0deg);
+            }
+            to {
+                -o-transform: rotate(359deg);
+            }
+        }
+
+        .divTable {
+            display: table;
+            width: 100%;
+        }
+
+        .divTableRow {
+            display: table-row;
+        }
+
+        .divTableCell {
+            display: table-cell;
+            border-top: 1px solid #bbb;
+            padding-left: 10px;
+        }
+
+        .divTableBody {
+            display: table-row-group;
+        }
+
+        /*style="padding:0px; "*/
     </style>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript"
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/vue@next"></script>
+
 </head>
-<h1>
-    Active Calls
-</h1>
-<body>
-<table>
-    <tr>
-        <th>Is_Active</th>
-        <th>Created Time</th>
-        <th>Location</th>
-        <th>Beat</th>
-    </tr>
-    <tbody id="calls">
+<body id="thiswebpage">
+
+<div style=" position: relative;
+		 background-color: #fff;
+		 border-left: 1px solid #d2d2dc;
+		 border-right: 1px solid #d2d2dc;
+		 border-bottom: 1px solid #d2d2dc;
+		 border-radius: 0;
+		 margin:  0 0.5rem 0 0.5rem;
+		 font-size: 1.5rem;
+		 font-weight: bold;
+		 padding-left: 10px;
+			">BackUpCAD Incidents Queue
+    <div style="float: right; right: 10px; padding-right: 10px; " onClick="data_request('','');"><i
+            class="fa fa-refresh" aria-hidden="true"></i></div>
+</div>
+
+<div id="accordion">
+
+    <div class="padding">
+        <div class="card statusLabel">
+            <div class="card-body" style="padding: 0px;margin: 0px;">
+                <div class="card-title" style="font-weight:300;text-indent:10px;color:white;">Assigned</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="padding">
+        <div class="card" id="i">
+            <div class="card-body" data-toggle="collapse" onclick="returnNarr(' + data[i].agency_event_id + ')"
+                 data-target="#n' + data[i].agency_event_id + '" aria-expanded="false"
+                 aria-controls="n' + data[i].agency_event_id + '">
+                <div style="float:left;">
+                    <div class="badge badge-pill badge-primary">callStatus - donno what this is for</div>
+                    <div style="float:left;">
+                        <div class="badge badge-pill badge-outline-info" style="white-space:nowrap;">CallType</div>
+                        <div class="badge badge-pill badge-danger">Priority</div>
 
 
-    </tbody>
+                    </div>
+                    <div class="card-title" style="white-space: nowrap; float:left; "> datetime
+                        Incident: incident number
+                    </div>
+
+                    <div class="card-description" style="float:left;"> Location 123, Beat: beat
+                    </div>
+
+                    <div class="badge badge-pill badge-info" style="white-space: nowrap; float:left;"><i
+                            class="fa fa-user mr-2"></i> Units Assigned
+                    </div>
+
+                </div>
+            </div>
+            <div id="n' + data[i].agency_event_id + '" class="collapse narrative"
+                 aria-labelledby="i' + data[i].agency_event_id + '" data-parent="#accordion">
+                <div class="divTable">
+                    <div class="divTableBody">
+                        <div class="divTableRow card-body">
+                            <div class="divTableCell" style="color:blue; white-space: nowrap; width:15%;">Unit: Author_Badge
+                            </div>
+                            <div class="divTableCell" style="color:blue; width:15%;">CommentTime</div>
+                            <div class="divTableCell">NARRRRRATIVEEEEEEEEEE</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="padding">
+        <div class="card statusLabel">
+            <div class="card-body" style="padding: 0px;margin: 0px;">
+                <div class="card-title" style="font-weight:400;text-indent:10px;color:white;">Pending</div>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 
 
-</table>
-<h3 id="calls">
+{% verbatim %}
+
+<div id="calls">
+    <table>
+        <tr>
+            <th>Is_Active</th>
+            <th>Created Time</th>
+            <th>Location</th>
+            <th>Beat</th>
+            <th>Type</th>
+        </tr>
+        <tbody>
+        <tr v-for="call in calls" :key="call.id">
+
+            <td>{{ call.is_active }}</td>
+            <td>{{ call.created_time }}</td>
+            <td>{{ call.location }}</td>
+            <td>{{ call.beat }}</td>
+            <td>{{ call.CFSType.type }}</td>
 
 
-</h3>
+        </tr>
+
+        </tbody>
+
+
+    </table>
+</div>
+
+{% endverbatim %}
 
 <script>
-    let tbody = document.getElementById('calls')
 
+    const {createApp} = Vue
 
-
-    let socket = new WebSocket('ws://localhost:8000/ws/activecalls')
-
-    socket.onmessage = function ({data: activecalls}) {
-        tbody.innerText = '<tr><td>' + JSON.parse(activecalls)[0].is_active + '</td></tr>'
-
-
+    const ActiveCalls = {
+        data() {
+            return {
+                calls: null
+            }
+        },
+        created() {
+            const socket = new WebSocket(`ws://${window.location.host}/ws/activecalls`)
+            let _this = this
+            socket.onmessage = function (event) {
+                _this.calls = JSON.parse(event.data)
+                console.log(_this.calls)
+            }
+        }
     }
+    createApp(ActiveCalls).mount('#calls')
+
 </script>
 </body>
 </html>

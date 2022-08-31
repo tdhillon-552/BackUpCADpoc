@@ -10,5 +10,4 @@ channel_layer = get_channel_layer()
 def get_active_calls():
     url = 'http://localhost:8000/api/listcalls/?format=json'
     response = requests.get(url)
-    print(response.text)
-    async_to_sync(channel_layer.group_send)('active_calls', {'type': 'send_active_calls', 'text': response.text})
+    async_to_sync(channel_layer.group_send)('active_calls', {'type': 'send_active_calls', 'text': response.json()})

@@ -11,6 +11,9 @@ def home(request):
     return render(request, 'BackupDispatch/home.html')
 
 
+def vuetest(request):
+    return render(request, 'BackupDispatch/vuetest.html')
+
 class CFSCreateView(CreateView):
     model = CFS
     form_class = CFSCreateForm

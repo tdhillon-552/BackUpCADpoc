@@ -1,0 +1,342 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<title>BackUpCAD Active Incidents</title>
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css' rel='stylesheet'>
+<style> 
+	body {
+		background-color: #f9f9fa;
+		font-family: 'Roboto', sans-serif;
+	 }
+	
+	 .padding {
+		 padding: .5rem .5rem 0rem .5rem
+		
+	 }
+
+	 .card {
+		 position: relative;
+		 display: flex;
+		 flex-direction: column;
+		 min-width: 0;
+		 word-wrap: break-word;
+		 background-color: #fff;
+		 background-clip: border-box;
+		 border: 1px solid #d2d2dc;
+		 border-radius: 0;
+	 }
+
+	 .card .card-body {
+		 /*padding: 1.25rem 1.75rem*/
+		 padding: .6rem .5rem .2rem .5rem;
+	 }
+
+	 .card-body {
+		 flex: 1 1 auto;
+		 padding: 1.25rem 
+	 }
+
+	 .card .card-title {
+		 color: #000000;
+		 font-weight: 500;
+		 margin: .2rem;
+	 }
+
+	 .card .card-description {
+		 font-weight: 400;
+		 color: #76838f;
+		 margin: .25rem;
+	 }
+
+	.narrative {
+		background-color: #ddd;
+		border-top: 0px none;
+		border-bottom: 1px solid #d2d2dc;
+		border-left: 1px solid #d2d2dc;
+		border-right: 1px solid #d2d2dc;
+	}
+	 .badge {
+		 border-radius: 0;
+         font-weight: bold;
+		 line-height: 1;
+		 padding: .3rem .7rem .4rem .7rem;
+         margin-left: 2px;
+         margin-right:2px;
+	 }
+
+	 .badge-outline-primary {
+		 color: #405189;
+		 border: 1px solid #405189;
+		 font-size: 1rem;
+	 }
+
+	 .badge.badge-pill {
+		 font-size: 1rem;
+		 border-radius: 10rem
+	 }
+
+	 .badge-outline-info {
+		 font-size: 1rem;
+		 color: black;
+		 border: 1px solid black
+	 }
+
+	 .badge-outline-danger {
+		 font-size: 1rem;
+		 color: #f1536e;
+		 border: 1px solid #f1536e
+	 }
+
+	 .badge-outline-success {
+		 font-size: 1rem;
+		 color: #00c689;
+		 border: 1px solid #00c689
+	 }
+
+	 .badge-outline-warning {
+		 font-size: 1rem;
+		 color: #fda006;
+		 border: 1px solid #fda006
+	 }
+	
+	.statusLabel {
+		 background-color:steelblue;
+		 font-size: 1.25rem;
+		 font-weight: bold;
+	}
+	
+	.blurbox {
+		position: absolute;
+		background-color: rgba(255, 255, 255, 0.3);
+		top: 40px;
+		left:0px;
+		right: 0px;
+		bottom: 0px;
+		-webkit-backdrop-filter: blur(3px);
+		backdrop-filter: blur(3px);
+		z-index: 1;
+		text-align: center;
+	}
+	.spinner {
+	   position: absolute;
+	   left: 50%;
+	   top: 50%;
+	   height:60px;
+	   width:60px;
+	   margin:0px auto;
+	   -webkit-animation: rotation .6s infinite linear;
+	   -moz-animation: rotation .6s infinite linear;
+	   -o-animation: rotation .6s infinite linear;
+	   animation: rotation .6s infinite linear;
+	   border-left:6px solid rgba(0,174,239,.15);
+	   border-right:6px solid rgba(0,174,239,.15);
+	   border-bottom:6px solid rgba(0,174,239,.15);
+	   border-top:6px solid rgba(0,174,239,.8);
+	   border-radius:100%;
+	}
+
+	@-webkit-keyframes rotation {
+	   from {-webkit-transform: rotate(0deg);}
+	   to {-webkit-transform: rotate(359deg);}
+	}
+	@-moz-keyframes rotation {
+	   from {-moz-transform: rotate(0deg);}
+	   to {-moz-transform: rotate(359deg);}
+	}
+	@-o-keyframes rotation {
+	   from {-o-transform: rotate(0deg);}
+	   to {-o-transform: rotate(359deg);}
+	}
+	.divTable{
+		display: table;
+		width: 100%;
+	}
+	.divTableRow {
+		display: table-row;	
+	}
+	.divTableCell {
+		display: table-cell;
+		border-top: 1px solid #bbb;
+		padding-left: 10px;
+	}
+	.divTableBody {
+		display: table-row-group;
+	}
+	/*style="padding:0px; "*/
+</style>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+
+</head>
+<body id="thiswebpage" >
+	<div id="loadingdimm" class="blurbox"><div class="spinner"></div></div>
+<div style=" position: relative;
+		 background-color: #fff;
+		 border-left: 1px solid #d2d2dc;
+		 border-right: 1px solid #d2d2dc;
+		 border-bottom: 1px solid #d2d2dc;
+		 border-radius: 0;
+		 margin:  0 0.5rem 0 0.5rem;
+		 font-size: 1.5rem;
+		 font-weight: bold;
+		 padding-left: 10px;
+			" >CAD Incidents Queue 
+	<div style="float: right; right: 10px; padding-right: 10px; " onClick="data_request('','');"><i class="fa fa-refresh" aria-hidden="true"></i></div>
+</div>
+
+<div id="accordion" ></div>
+<br>	
+    <script>
+        let cBEAT = "";
+        let cPRIORITY = "";
+
+        function data_refresh() {
+            //cBEAT = document.getElementById('beat').value;
+            //cPRIORITY= document.getElementById('priority').value;
+            data_request(cBEAT,cPRIORITY);
+        }
+
+        function load_call_data(event_number) {
+            let call_html = '';
+            $.ajax({
+                url: '/testapp/calldatadump',
+                data: {"event_number" : event_number },
+                type: "GET",
+                dataType: "json",
+                success: function (call_data) {
+                    for(i = 0; i < call_data.length; i++ ){
+                        call_html += '<p>' + call_data[i].Narrative;
+                        call_html += '</p>';
+
+                    }
+                    var $callplacement = $('#call_stuff');
+                    $callplacement.empty();
+                    //$table.trigger('reflow');
+                    $('#call_stuff').append(call_html);
+
+                }
+            })
+        }
+
+        function data_request(beat, priority) {
+            var card_html = '';
+            var narrative_html = '';
+			document.getElementById("loadingdimm").style.display = 'block';
+
+            $.ajax({
+                url: '/testapp/incident_dump',
+                data: { "BEAT" : beat, "priority": priority},
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+					var callStatusCheck = false;
+					var callStatusDone = false;
+					
+					card_html += '<div class="padding">';
+					card_html += '<div class="card statusLabel" >';
+					card_html += '<div class="card-body" style="padding: 0px;margin: 0px;" >';
+					card_html += '<div class="card-title" style="font-weight:300;text-indent:10px;color:white;" >Assigned</div>'
+					card_html += '</div>'
+                    card_html += '</div>'
+                    card_html += '</div>'
+
+                    for(i = 0; i < data.length; i++ ){
+						
+                        callStatus = 'Assigned'
+                        if (data[i].Units.trim()==''){
+                            callStatus = 'Pending'
+							callStatusCheck = true;
+                        }
+						
+						if (callStatusCheck == true && callStatusDone == false) {
+							card_html += '<div class="padding">';
+							card_html += '<div class="card statusLabel" >';
+							card_html += '<div class="card-body" style="padding: 0px;margin: 0px;" >';
+							card_html += '<div class="card-title" style="font-weight:400;text-indent:10px;color:white;" >Pending</div>'
+							card_html += '</div>'
+							card_html += '</div>'
+							card_html += '</div>'
+							callStatusDone = true;
+						}
+                        card_html += '<div class="padding">';
+                        card_html += '<div class="card"  id="i' + data[i].agency_event_id + '" >';
+                        card_html += '<div class="card-body" data-toggle="collapse" onclick="returnNarr(' + data[i].agency_event_id + ')" data-target="#n' + data[i].agency_event_id + '" aria-expanded="false" aria-controls="n' + data[i].agency_event_id + '" >';
+                        //card_html += '<div style="float:left;"><div class="badge badge-pill badge-primary" >' + callStatus + '</div>';
+						card_html += '<div style="float:left;">';
+                        card_html += '<div class="badge badge-pill badge-outline-info" style="white-space:nowrap;" >' + data[i].CallType + '</div>';
+
+                        switch(data[i].Priority) {
+                            case "P1":
+                                card_html += '<div class="badge badge-pill badge-danger" >' + data[i].Priority + '</div>';
+                                break;
+                            case "P2":
+                                card_html += '<div class="badge badge-pill badge-warning" >' + data[i].Priority + '</div>';
+                                break;
+                            case "P3":
+                                card_html += '<div class="badge badge-pill badge-secondary" >' + data[i].Priority + '</div>';
+                                break;
+                            default:
+                                 card_html += '<div class="badge badge-pill badge-light" >' + data[i].Priority + '</div>';
+                        }
+
+                        card_html += '</div><div class="card-title" style="white-space: nowrap; float:left; " >' + data[i].Incident_StartTime + ' Incident: ' + data[i].IncidentNum + '</div>';
+                        card_html += '<div class="card-description" style="float:left;" >' + data[i].Location + ', Beat: ' + data[i].BEAT + '</div>';
+                        if (data[i].Units.trim()!=''){
+                            card_html += '<div class="badge badge-pill badge-info" style="white-space: nowrap; float:left;" ><i class="fa fa-user mr-2"></i>' + data[i].Units + '</div>';
+                        }
+                        card_html += '</div>'
+                        card_html += '</div>'
+                        card_html += '<div id="n' + data[i].agency_event_id + '" class="collapse narrative" aria-labelledby="i' + data[i].agency_event_id + '" data-parent="#accordion" >';
+                        card_html += '<div class="card-body">n' + data[i].agency_event_id;
+                        card_html += '</div>'
+                        card_html += '</div>'
+                        card_html += '</div>'
+                        card_html += '</div>'
+                    }
+
+                    var $card_stack = $('#accordion');
+                    $card_stack.empty();
+                    //$table.trigger('reflow');
+					document.getElementById("loadingdimm").style.display = 'none';
+                    $('#accordion').append(card_html);
+                    }
+                
+            })
+        }
+
+        function returnNarr(id){
+            narrative_html = '';
+            var divName = '#n' + id;
+            $(divName).empty();
+
+            $.ajax({
+                url: '/testapp/incidentNarrativeData',
+                data: { "id" : id },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+					narrative_html += '<div class="divTable" ><div class="divTableBody">'
+                    for(i = 0; i < data.length; i++ ){
+						narrative_html += '<div class="divTableRow card-body" >'
+						narrative_html += '<div class="divTableCell" style="color:blue; white-space: nowrap; width=15%;">' + data[i].Unit + ' ' + data[i].Author_Badge + '</div>';
+						narrative_html += '<div class="divTableCell" style="color:blue; width=15%;" >' + data[i].CommentTime + '</div>';
+						narrative_html += '<div class="divTableCell" >' + data[i].Narrative + '</div>';
+						narrative_html += '</div>'
+                    }
+					narrative_html += '</div></div>'
+                    $(divName).empty();
+                    $(divName).append(narrative_html);
+                }
+            })
+        }
+
+        //setInterval(function(){data_request(cBEAT,cPRIORITY);}, 25000);
+        data_request("", "");
+
+    </script>
+</body>
+</html>

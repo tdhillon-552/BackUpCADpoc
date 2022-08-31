@@ -6,6 +6,7 @@ from BackUpDispatch.views import CFSCreateView, API_list_calls
 urlpatterns = [
 
     path('', views.home, name='BackUpDispatch_home'),
+    path('vuetest/', views.vuetest, name='vuetest'),
     path('enter/', CFSCreateView.as_view(), name='caseentry'),
     path('listcalls/', views.active_calls, name='listactivecalls'),
 

@@ -60,13 +60,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'BackUpCAD.wsgi.application'
 ASGI_APPLICATION = 'BackUpCAD.asgi.application'
-CELERY_BROKER_URL = 'redis://s-ci-iv-web1:6379'
+CELERY_BROKER_URL = 'redis://s-pd-iv-web1:6379'
 
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [('s-ci-iv-web1', 6379)]
+            'hosts': [('s-pd-iv-web1', 6379)]
         }
     }
 }

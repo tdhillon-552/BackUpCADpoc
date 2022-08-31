@@ -14,6 +14,7 @@ class CFSTableSerializer(serializers.Serializer):
 
 
 class CallSerializer(serializers.Serializer):
+    id              = serializers.IntegerField()
     is_active       = serializers.BooleanField()
     created_time    = serializers.DateTimeField()
     dispatched_time = serializers.DateTimeField()

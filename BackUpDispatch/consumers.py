@@ -1,4 +1,5 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
+import json
 
 
 class ActiveCallsConsumer(AsyncWebsocketConsumer):
@@ -14,5 +15,5 @@ class ActiveCallsConsumer(AsyncWebsocketConsumer):
     async def send_active_calls(self, event):
         text_message = event['text']
 
-        await self.send(text_message)
+        await self.send(json.dumps(text_message))
 
