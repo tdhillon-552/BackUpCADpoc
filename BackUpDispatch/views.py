@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView
 from rest_framework.generics import ListAPIView
 
 from BackUpDispatch.forms import CFSCreateForm
@@ -27,3 +27,9 @@ def active_calls(request):
 class API_list_calls(ListAPIView):
     serializer_class = CallSerializer
     queryset = CFS.objects.all()
+
+
+class CFSDetailView(DetailView):
+    model = CFS
+    template_name = 'BackupDispatch/calldetails.html'
+

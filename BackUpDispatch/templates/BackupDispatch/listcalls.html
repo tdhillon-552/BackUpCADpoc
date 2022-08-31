@@ -221,25 +221,25 @@
             </div>
         </div>
     </div>
-
-    <div class="padding">
-        <div class="card" id="i">
+{% verbatim %}
+    <div id="calls">
+    <div class="padding" v-for="call in calls" :key="call.id">
+        <div class="card" id='i'>
             <div class="card-body" data-toggle="collapse" onclick="returnNarr(' + data[i].agency_event_id + ')"
                  data-target="#n' + data[i].agency_event_id + '" aria-expanded="false"
                  aria-controls="n' + data[i].agency_event_id + '">
                 <div style="float:left;">
-                    <div class="badge badge-pill badge-primary">callStatus - donno what this is for</div>
+                    <div class="badge badge-pill badge-primary"> <a :href="'/view/' + call.id" style="color: white">Details</a></div>
                     <div style="float:left;">
-                        <div class="badge badge-pill badge-outline-info" style="white-space:nowrap;">CallType</div>
+                        <div class="badge badge-pill badge-outline-info" style="white-space:nowrap;">{{ call.CFSType.type }}</div>
                         <div class="badge badge-pill badge-danger">Priority</div>
-
 
                     </div>
                     <div class="card-title" style="white-space: nowrap; float:left; "> datetime
                         Incident: incident number
                     </div>
 
-                    <div class="card-description" style="float:left;"> Location 123, Beat: beat
+                    <div class="card-description" style="float:left;"> Location 123, Beat: {{ call.beat }}
                     </div>
 
                     <div class="badge badge-pill badge-info" style="white-space: nowrap; float:left;"><i
@@ -253,61 +253,29 @@
                 <div class="divTable">
                     <div class="divTableBody">
                         <div class="divTableRow card-body">
-                            <div class="divTableCell" style="color:blue; white-space: nowrap; width:15%;">Unit: Author_Badge
+                            <div class="divTableCell" style="color:blue; white-space: nowrap; width:15%;">Unit:
+                                Author_Badge
                             </div>
                             <div class="divTableCell" style="color:blue; width:15%;">CommentTime</div>
                             <div class="divTableCell">NARRRRRATIVEEEEEEEEEE</div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+{% endverbatim %}
 
-
-    <div class="padding">
-        <div class="card statusLabel">
-            <div class="card-body" style="padding: 0px;margin: 0px;">
-                <div class="card-title" style="font-weight:400;text-indent:10px;color:white;">Pending</div>
-            </div>
+<div class="padding">
+    <div class="card statusLabel">
+        <div class="card-body" style="padding: 0px;margin: 0px;">
+            <div class="card-title" style="font-weight:400;text-indent:10px;color:white;">Pending</div>
         </div>
     </div>
-
+</div>
 </div>
 
-
-
-{% verbatim %}
-
-<div id="calls">
-    <table>
-        <tr>
-            <th>Is_Active</th>
-            <th>Created Time</th>
-            <th>Location</th>
-            <th>Beat</th>
-            <th>Type</th>
-        </tr>
-        <tbody>
-        <tr v-for="call in calls" :key="call.id">
-
-            <td>{{ call.is_active }}</td>
-            <td>{{ call.created_time }}</td>
-            <td>{{ call.location }}</td>
-            <td>{{ call.beat }}</td>
-            <td>{{ call.CFSType.type }}</td>
-
-
-        </tr>
-
-        </tbody>
-
-
-    </table>
-</div>
-
-{% endverbatim %}
 
 <script>
 
