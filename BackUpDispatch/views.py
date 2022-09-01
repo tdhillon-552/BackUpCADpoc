@@ -24,6 +24,10 @@ def active_calls(request):
     return render(request, 'BackupDispatch/listcalls.html')
 
 
+def active_callsxhr(request):
+    return render(request, 'BackupDispatch/listcallsxhr.html')
+
+
 class API_list_calls(ListAPIView):
     serializer_class = CallSerializer
     queryset = CFS.objects.all()
